@@ -1,4 +1,5 @@
 import Deps from '../deps';
+import DomUtils from "../utils/dom.coffee";
 
 class Form
   constructor: (opts = {}) ->
@@ -91,9 +92,9 @@ class Form
 
   _canBeSubmitted: ->
     return true unless @submit?
-    return false if Deps.Utils.Dom.hasClass @submit, 'active'
-    return false if Deps.Utils.Dom.hasClass @submit, 'success'
-    return false if Deps.Utils.Dom.hasClass @submit, 'failure'
+    return false if DomUtils.hasClass @submit, 'active'
+    return false if DomUtils.hasClass @submit, 'success'
+    return false if DomUtils.hasClass @submit, 'failure'
     true
 
   _submitForm: ->
@@ -123,7 +124,7 @@ class Form
   _handleSuccess: (data, clearForm = true) ->
     val = data.flash?.success ? Deps.I18n[@locale].ui.form.success
     if @submit?
-      Deps.Utils.Dom.addClass @submit, 'success'
+      DomUtils.addClass @submit, 'success'
       @submit.value = val
     if data.access_token?
       Deps.Env.loco.getWire().setToken data.access_token
@@ -136,7 +137,7 @@ class Form
     setTimeout =>
       if @submit?
         @submit.disabled = false
-        Deps.Utils.Dom.removeClass @submit, 'success'
+        DomUtils.removeClass @submit, 'success'
         @submit.value = @submitVal
       selector = ":not([data-loco-not-clear=true])"
       if clearForm
@@ -169,15 +170,15 @@ class Form
     if @submit?
       if @submit.value is @submitVal or @submit.value is Deps.I18n[@locale].ui.form.sending
         @submit.value = Deps.I18n[@locale].ui.form.errors.invalid_data
-      Deps.Utils.Dom.addClass @submit, 'failure'
+      DomUtils.addClass @submit, 'failure'
     this._showErrors()
     setTimeout =>
       if @submit?
         @submit.disabled = false
-        Deps.Utils.Dom.removeClass @submit, 'failure'
+        DomUtils.removeClass @submit, 'failure'
         @submit.value = @submitVal
       for node in @form.querySelectorAll('input.invalid, textarea.invalid, select.invalid')
-        Deps.Utils.Dom.removeClass node, 'invalid'
+        DomUtils.removeClass node, 'invalid'
     , 1000
 
   _assignAttribs: ->
@@ -217,26 +218,26 @@ class Form
 
   _submittingForm: (hideErrors = true) ->
     if @submit?
-      Deps.Utils.Dom.removeClass @submit, 'success'
-      Deps.Utils.Dom.removeClass @submit, 'failure'
-      Deps.Utils.Dom.addClass @submit, 'active'
+      DomUtils.removeClass @submit, 'success'
+      DomUtils.removeClass @submit, 'failure'
+      DomUtils.addClass @submit, 'active'
       @submit.value = Deps.I18n[@locale].ui.form.sending
     @delegator[@callbackActive]() if @callbackActive?
     this._hideErrors() if hideErrors
 
   _connectionError: ->
     return unless @submit?
-    Deps.Utils.Dom.removeClass @submit, 'active'
-    Deps.Utils.Dom.addClass @submit, 'failure'
+    DomUtils.removeClass @submit, 'active'
+    DomUtils.addClass @submit, 'failure'
     @submit.value = Deps.I18n[@locale].ui.form.errors.connection
     setTimeout =>
       @submit.disabled = false
-      Deps.Utils.Dom.removeClass @submit, 'failure'
+      DomUtils.removeClass @submit, 'failure'
       @submit.value = @submitVal
     , 3000
 
   _alwaysAfterRequest: ->
     return unless @submit?
-    Deps.Utils.Dom.removeClass @submit, 'active'
+    DomUtils.removeClass @submit, 'active'
 
 export default Form
