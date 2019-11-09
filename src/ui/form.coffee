@@ -1,5 +1,6 @@
 import Deps from '../deps';
 import DomUtils from "../utils/dom.coffee";
+import CollectionUtils from "../utils/collection.coffee";
 
 class Form
   constructor: (opts = {}) ->
@@ -48,7 +49,7 @@ class Form
         continue
       uniqInputTypes = Deps.Utils.Array.uniq Deps.Utils.Array.map formEl, (e) -> e.getAttribute 'type'
       if uniqInputTypes.length is 1 and uniqInputTypes[0] is 'radio'
-        radioEl = Deps.Utils.Collection.find formEl, (e) => e.value is String(@obj[name])
+        radioEl = CollectionUtils.find formEl, (e) => e.value is String(@obj[name])
         if radioEl?
           radioEl.checked = true
           continue
@@ -194,7 +195,7 @@ class Form
         continue
       uniqInputTypes = Deps.Utils.Array.uniq Deps.Utils.Array.map formEl, (e) -> e.getAttribute 'type'
       if uniqInputTypes.length is 1 and uniqInputTypes[0] is 'radio'
-        radioEl = Deps.Utils.Collection.find formEl, (e) => e.checked is true
+        radioEl = CollectionUtils.find formEl, (e) => e.checked is true
         if radioEl?
           @obj.assignAttr name, radioEl.value
           continue
