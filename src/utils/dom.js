@@ -18,4 +18,9 @@ const removeClass = (el, className) => {
     );
 };
 
-export { hasClass, addClass, removeClass };
+const getUniqInputTypes = formEl => {
+  const types = Array.from(formEl).map(e => e.getAttribute("type"));
+  return types.filter((v, i, a) => a.indexOf(v) === i);
+};
+
+export { addClass, getUniqInputTypes, hasClass, removeClass };
