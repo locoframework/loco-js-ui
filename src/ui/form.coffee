@@ -1,6 +1,5 @@
 import Deps from '../deps';
 import { addClass, getUniqInputTypes, hasClass, removeClass } from "../utils/dom";
-import CollectionUtils from "../utils/collection.coffee";
 
 class Form
   constructor: (opts = {}) ->
@@ -49,7 +48,7 @@ class Form
         continue
       uniqInputTypes = getUniqInputTypes(formEl);
       if uniqInputTypes.length is 1 and uniqInputTypes[0] is 'radio'
-        radioEl = CollectionUtils.find formEl, (e) => e.value is String(this.obj[name])
+        radioEl = Array.from(formEl).find (e) => e.value is String(this.obj[name])
         if radioEl?
           radioEl.checked = true
           continue
@@ -195,7 +194,7 @@ class Form
         continue
       uniqInputTypes = getUniqInputTypes(formEl);
       if uniqInputTypes.length is 1 and uniqInputTypes[0] is 'radio'
-        radioEl = CollectionUtils.find formEl, (e) => e.checked is true
+        radioEl = Array.from(formEl).find (e) => e.checked is true
         if radioEl?
           this.obj.assignAttr name, radioEl.value
           continue
