@@ -1,5 +1,5 @@
 const Deps = {
-  Env: null,
+  loco: null,
   I18n: null
 };
 

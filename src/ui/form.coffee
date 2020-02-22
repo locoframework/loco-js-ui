@@ -19,7 +19,7 @@ class Form
       @submit = @form.querySelector '[type="submit"]'
     if @submit?
       @submitVal = @submit.value
-    @locale = Deps.Env.loco.getLocale()
+    @locale = Deps.loco.getLocale()
 
   getObj: -> @obj
 
@@ -129,7 +129,7 @@ class Form
       DomUtils.addClass @submit, 'success'
       @submit.value = val
     if data.access_token?
-      Deps.Env.loco.getWire().setToken data.access_token
+      Deps.loco.getWire().setToken(data.access_token)
     if @callbackSuccess?
       if data.data?
         @delegator[@callbackSuccess](data.data)
