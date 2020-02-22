@@ -1,5 +1,5 @@
 import Deps from '../deps';
-import DomUtils from "../utils/dom.coffee";
+import { hasClass, addClass, removeClass } from "../utils/dom";
 import CollectionUtils from "../utils/collection.coffee";
 import ArrayUtils from "../utils/array.coffee";
 
@@ -94,9 +94,9 @@ class Form
 
   _canBeSubmitted: ->
     return true unless this.submit?
-    return false if DomUtils.hasClass this.submit, 'active'
-    return false if DomUtils.hasClass this.submit, 'success'
-    return false if DomUtils.hasClass this.submit, 'failure'
+    return false if hasClass(this.submit, 'active')
+    return false if hasClass(this.submit, 'success')
+    return false if hasClass(this.submit, 'failure')
     true
 
   _submitForm: ->
@@ -126,7 +126,7 @@ class Form
   _handleSuccess: (data, clearForm = true) ->
     val = data.flash?.success ? Deps.I18n[this.locale].ui.form.success
     if this.submit?
-      DomUtils.addClass this.submit, 'success'
+      addClass(this.submit, 'success')
       this.submit.value = val
     if data.access_token?
       Deps.loco.getWire().setToken(data.access_token)
@@ -139,7 +139,7 @@ class Form
     setTimeout =>
       if this.submit?
         this.submit.disabled = false
-        DomUtils.removeClass this.submit, 'success'
+        removeClass(this.submit, 'success')
         this.submit.value = this.submitVal
       selector = ":not([data-loco-not-clear=true])"
       if clearForm
@@ -172,15 +172,15 @@ class Form
     if this.submit?
       if this.submit.value is this.submitVal or this.submit.value is Deps.I18n[this.locale].ui.form.sending
         this.submit.value = Deps.I18n[this.locale].ui.form.errors.invalid_data
-      DomUtils.addClass this.submit, 'failure'
+      addClass(this.submit, 'failure')
     this._showErrors()
     setTimeout =>
       if this.submit?
         this.submit.disabled = false
-        DomUtils.removeClass this.submit, 'failure'
+        removeClass(this.submit, 'failure')
         this.submit.value = this.submitVal
       for node in this.form.querySelectorAll('input.invalid, textarea.invalid, select.invalid')
-        DomUtils.removeClass node, 'invalid'
+        removeClass(node, 'invalid')
     , 1000
 
   _assignAttribs: ->
@@ -220,26 +220,26 @@ class Form
 
   _submittingForm: (hideErrors = true) ->
     if this.submit?
-      DomUtils.removeClass this.submit, 'success'
-      DomUtils.removeClass this.submit, 'failure'
-      DomUtils.addClass this.submit, 'active'
+      removeClass(this.submit, 'success')
+      removeClass(this.submit, 'failure')
+      addClass(this.submit, 'active')
       this.submit.value = Deps.I18n[this.locale].ui.form.sending
     this.delegator[this.callbackActive]() if this.callbackActive?
     this._hideErrors() if hideErrors
 
   _connectionError: ->
     return unless this.submit?
-    DomUtils.removeClass this.submit, 'active'
-    DomUtils.addClass this.submit, 'failure'
+    removeClass(this.submit, 'active')
+    addClass(this.submit, 'failure')
     this.submit.value = Deps.I18n[this.locale].ui.form.errors.connection
     setTimeout =>
       this.submit.disabled = false
-      DomUtils.removeClass this.submit, 'failure'
+      removeClass(this.submit, 'failure')
       this.submit.value = this.submitVal
     , 3000
 
   _alwaysAfterRequest: ->
     return unless this.submit?
-    DomUtils.removeClass this.submit, 'active'
+    removeClass(this.submit, 'active')
 
 export default Form
