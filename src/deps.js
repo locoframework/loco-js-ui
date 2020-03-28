@@ -1,5 +1,6 @@
 const Deps = {
-  loco: null,
+  getLocale: null,
+  wire: null,
   I18n: null
 };
 
