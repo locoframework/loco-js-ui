@@ -6,7 +6,6 @@ class Form
     this.formId = opts.id
     this.obj = opts.for
     this.initObj = if opts.initObj? and opts.initObj then true else false
-    this.delegator = opts.delegator
     this.callbackSuccess = opts.callbackSuccess
     this.callbackFailure = opts.callbackFailure
     this.callbackActive = opts.callbackActive
@@ -76,7 +75,7 @@ class Form
       this._hideErrors()
       if this.obj.isInvalid()
         this._renderErrors()
-        this.delegator[this.callbackFailure]() if this.callbackFailure?
+        this.callbackFailure() if this.callbackFailure?
         return
       this._submittingForm false
       clearForm = if this.obj.id? then false else true
@@ -86,7 +85,7 @@ class Form
         if data.success
           this._handleSuccess data, clearForm
         else
-          this.delegator[this.callbackFailure]() if this.callbackFailure?
+          this.callbackFailure() if this.callbackFailure?
           this._renderErrors()
       .catch (err) => this._connectionError()
 
@@ -130,9 +129,9 @@ class Form
       Deps.loco.getWire().setToken(data.access_token)
     if this.callbackSuccess?
       if data.data?
-        this.delegator[this.callbackSuccess](data.data)
+        this.callbackSuccess(data.data)
       else
-        this.delegator[this.callbackSuccess]()
+        this.callbackSuccess()
       return
     setTimeout =>
       if this.submit?
@@ -222,7 +221,7 @@ class Form
       removeClass(this.submit, 'failure')
       addClass(this.submit, 'active')
       this.submit.value = Deps.I18n[this.locale].ui.form.sending
-    this.delegator[this.callbackActive]() if this.callbackActive?
+    this.callbackActive() if this.callbackActive?
     this._hideErrors() if hideErrors
 
   _connectionError: ->
