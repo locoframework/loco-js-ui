@@ -126,7 +126,7 @@ class Form
       addClass(this.submit, 'success')
       this.submit.value = val
     if data.access_token?
-      Deps.loco.getWire().setToken(data.access_token)
+      Deps.loco.wire.token = data.access_token;
     if this.callbackSuccess?
       if data.data?
         this.callbackSuccess(data.data)
