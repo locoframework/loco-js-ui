@@ -1,46 +1,60 @@
 ![logo](https://raw.githubusercontent.com/artofcodelabs/artofcodelabs.github.io/master/assets/ext/loco_logo_trans_sqr-300px.png)
 
-> Slogan here
+> Loco-JS-UI connects Loco-JS-Model with UI elements on a page
 
 # 🧐 What is Loco-JS-UI?
+
+Loco-JS-UI is an optional part of the Loco framework. It can be used with Loco-JS to connect models with UI elements like forms. Models are created using Loco-JS-Models and connect JavaScript objects with their representation on the back-end.
+
+Loco-JS-UI supports only form at this moment throughout all UI elements.
+
+*Visualization of the Loco framework:*
 
 ```
 Loco Framework
 |
-|--- ...
+|--- Loco-Rails (back-end part)
+|       |
+|       |--- Loco-Rails-Core (logical structure for JS / can be used separately with Loco-JS-Core)
+|
+|--- Loco-JS (front-end part)
+        |
+        |--- Loco-JS-Core (logical structure for JS / can be used separately)
+        |
+        |--- Loco-JS-Model (model part / can be used separately)
+        |
+        |--- other parts of Loco-JS
+
+        Loco-JS-UI - connects models with UI elements (extracted to a separate library)
 ```
 
 # 📝 UI.Form
 
-This class is useful when you want to allow users of you app to modify model's attributes. In other words, it connects a model instance with a form.
-`UI.Form` converts attributes of model's instance to the values of the corresponding form elements. It gives you a front-end validation without an extra effort and it turns standard static form into dynamic, submitted asynchronously one.
+`UI.Form` is a class that connects a model instance with a form.  
+It is useful to allow users to modify the model's attributes.  
+`UI.Form` converts attributes of the model's instance to the values of the corresponding form elements.  
+It delivers a front-end validation without an extra effort and it turns a standard static form into a dynamic, submitted asynchronously one.
 
-In this section I will be using exemplary model from [Loco-JS-Model README](https://github.com/locoframework/loco-js-model).
-
-The following code presents a view with an example of initializing and using the `UI.Form`.
+Example:
 
 ```javascript
-// views/admin/coupons/new.js
+import { UI } from "loco-js-ui";
+import User from "models/User";
 
-import { UI, Views } from "loco-js";
+const created = data => {
+  console.log("TODO");
+};
 
-import Coupon from "models/Coupon";
+export default () => {
+  const form = new UI.Form({
+    for: new User(),
+    callbackSuccess: created
+  });
+  form.render();
+};
+```
 
-class New extends Views.Base {
-  static initCoupon(planId) {
-    return new Coupon({
-      resource: "admin",
-      planId,
-      amountOff: 0.0,
-      percentOff: 0,
-      duration: "once"
-    });
-  }
-
-  constructor(opts) {
-    super(opts);
-    this.coupon = this.constructor.initCoupon(opts.planId);
-  }
+```javascript
 
   render() {
     const form = new UI.Form({
@@ -191,7 +205,7 @@ The example of the failure response:
 
 # 📜 License
 
-Loco-JS-Model is released under the [MIT License](https://opensource.org/licenses/MIT).
+Loco-JS-UI is released under the [MIT License](https://opensource.org/licenses/MIT).
 
 # 👨‍🏭 Author
 
