@@ -59,14 +59,14 @@ const created = data => {
 
 export default () => {
   const form = new UI.Form({
-    for: new User(), // (optional) model instance connected with the form
-    id: "new_user",  // (optional) the ID attribute of the HTML <form> element.
-                     // If not passed - it is resolved based on the value of model's ID property to:
-                     // * `edit_${lowercased model's identity property}_${model's ID}` - if present
-                     // * `new_${lowercased model's identity property}` - if null
-    initObj: false,  // (optional) determines whether to initialize the passed object based
-                     // on the value of the corresponding form elements.
-                     // False by default (object retains the initial attribute values)
+    for: new User(),  // (optional) model instance connected with the form
+    id: "new_user",   // (optional) the ID attribute of the HTML <form> element.
+                      // If not passed - it is resolved based on the value of model's ID property to:
+                      // * `edit_${lowercased model's identity property}_${model's ID}` - if present
+                      // * `new_${lowercased model's identity property}` - if null
+    initObj: false,   // (optional) determines whether to initialize the passed object based
+                      // on the value of the corresponding form elements.
+                      // False by default (object retains the initial attribute values)
     callbackActive: active,   // (optional) function called after sending the request
     callbackFailure: failure  // (optional) function called if an object is invalid
                               // on the front-end or back-end side (400 HTTP status code)
