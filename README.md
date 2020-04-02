@@ -41,60 +41,39 @@ Example:
 import { UI } from "loco-js-ui";
 import User from "models/User";
 
+// ...
+
+const active = () => {
+  console.log("Your account is being created...");
+}
+
+const failure = () => {
+  console.log("Creation failed or front-end validation hasn't passed.");
+}
+
 const created = data => {
-  console.log("TODO");
+  subscribe({ to: new User({ id: data.id }), with: receivedSignal });
+  document.querySelector("form").style.display = "none";
+  renderFlash({ notice: data.notice });
 };
 
 export default () => {
   const form = new UI.Form({
-    for: new User(),
-    callbackSuccess: created
+    for: new User(), // (optional) model instance connected with the form
+    id: "new_user",  // (optional) the ID attribute of the HTML <form> element.
+                     // If not passed - it is resolved based on the value of model's ID property to:
+                     // * `edit_${lowercased model's identity property}_${model's ID}` - if present
+                     // * `new_${lowercased model's identity property}` - if null
+    initObj: false,  // (optional) determines whether to initialize the passed object based
+                     // on the value of the corresponding form elements.
+                     // False by default (object retains the initial attribute values)
+    callbackActive: active,   // (optional) function called after sending the request
+    callbackFailure: failure  // (optional) function called if an object is invalid
+                              // on the front-end or back-end side (400 HTTP status code)
+    callbackSuccess: created  // (optional) function called on success
   });
   form.render();
 };
-```
-
-```javascript
-
-  render() {
-    const form = new UI.Form({
-      for: this.coupon, // (optional) an instance of a model that is connected
-                        // with the form
-      id: "coupon-form", // (optional) ID attribute of the HTML <form> element.
-                         // If not passed - it will be resolved, based on
-                         // whether model has ID, to:
-                         // * "edit_${lowercased model's identity prop}_${model's ID}"
-                         // * "new_${lowercased model's identity prop}"
-      initObj: false, // (optional) whether to initialize passed object based
-                      // on values of corresponding form's elements.
-                      // False by default (it has its initial attribute values)
-      delegator: this, // (optional) an object to which all the callbacks
-                       // are delegated to
-      callbackActive: "callbackActive", // (optional) the name of the function
-                                        // that will be called after sending the request
-      callbackSuccess: "callbackSuccess", // (optional) the name of the function that
-                                          // will be called on success
-      callbackFailure: "callbackFailure" // (optional) the name of the function that
-                                         // will be called if an object
-                                         // is invalid on the front-end
-                                         // or back-end side (400 HTTP status code)
-    });
-
-    form.render();
-  }
-
-  callbackActive() {
-    console.log("Coupon is creating on the server...");
-  }
-
-  callbackSuccess(data) {
-    console.log("Coupon has been created.");
-  }
-
-  callbackFailure() {
-    console.log("Creation failed or front-end validations didn't pass.");
-  }
-}
 ```
 
 From the HTML perspective - the following example shows how a form should be structured.
