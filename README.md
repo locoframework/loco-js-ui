@@ -39,96 +39,101 @@ Example:
 
 ```javascript
 import { UI } from "loco-js-ui";
-import User from "models/User";
+import CommentModel from "models/article/Comment";
 
 // ...
 
 const active = () => {
-  console.log("Your account is being created...");
+  console.log("The comment is being updated...");
 }
 
 const failure = () => {
-  console.log("Creation failed or front-end validation hasn't passed.");
+  console.log("Update failed or front-end validation hasn't passed.");
 }
 
-const created = data => {
-  subscribe({ to: new User({ id: data.id }), with: receivedSignal });
+const updated = data => {
   document.querySelector("form").style.display = "none";
   renderFlash({ notice: data.notice });
 };
 
-export default () => {
+export default (opts = {}) => {
   const form = new UI.Form({
-    for: new User(),  // (optional) model instance connected with the form
-    id: "new_user",   // (optional) the ID attribute of the HTML <form> element.
-                      // If not passed - it is resolved based on the value of model's ID property to:
-                      // * `edit_${lowercased model's identity property}_${model's ID}` - if present
-                      // * `new_${lowercased model's identity property}` - if null
-    initObj: false,   // (optional) determines whether to initialize the passed object based
-                      // on the value of the corresponding form elements.
-                      // False by default (object retains the initial attribute values)
+    for: new CommentModel({ id: opts.commentId, resource: "admin" }),
+        // (optional) model instance connected with the form
+    id: `edit_comment_${opts.commentId}`, 
+        // (optional) the ID attribute of the HTML <form> element.
+        // If not passed - it is resolved based on the value of model's ID property to:
+        // * `edit_${lowercased model's identity property}_${model's ID}` - if present
+        // * `new_${lowercased model's identity property}` - if null
+    initObj: true,  // (optional) determines whether to initialize the passed object based
+                    // on the value of the corresponding form elements.
+                    // False by default (object retains the initial attribute values)
     callbackActive: active,   // (optional) function called after sending the request
     callbackFailure: failure  // (optional) function called if an object is invalid
                               // on the front-end or back-end side (400 HTTP status code)
-    callbackSuccess: created  // (optional) function called on success
+    callbackSuccess: updated  // (optional) function called on success
   });
   form.render();
 };
 ```
 
 From the HTML perspective - the following example shows how a form should be structured.
-What you should pay attention to is that all tags related to given attribute, should be wrapped by a tag with a proper **data-attr** attribute. The value of this attribute should match the **remote name** of given attribute (the name of the corresponding attribute on the server side, returned by an API).
+What you should pay attention to is that all tags related to a given attribute should be wrapped in a tag with a proper **data-attr** attribute. The value of this attribute should match the **remote name** of the given attribute (the name of the corresponding attribute on the server-side, returned by an API). This value is configurable in the model.
 
 Look at how errors are expressed. The tag is irrelevant, only **errors** class and **data-for** HTML attribute are important.
 
 ```html
-<form id="coupon-form">
-  <p data-attr="stripe_id">
-    <label>Stripe ID</label><br>
-    <input type="text" />
-    <span class="errors" data-for="stripe_id"></span>
+<form id="edit_comment_1" 
+      action="https://example.com/admin/articles/1/comments/1" 
+      accept-charset="UTF-8" 
+      method="post">
+      
+  <p data-attr="author">
+    <label for="comment_author">Author</label> <br>
+    <input type="text" value="Tom" name="comment[author]" id="comment_author" />
+    <span class="errors" data-for="author"></span>
   </p>
 
-  <p data-attr="amount_off">
-    <input type="radio" name="amount_off" value="0" />
-    <label>$0 off</label>
-
-    <input type="radio" name="amount_off" value="20" />
-    <label>$20 off</label>
-
-    <input type="radio" name="amount_off" value="50" />
-    <label>$50 off</label>
-
-    <span class="errors" data-for="amount_off"></span>
+  <p data-attr="text">
+    <label for="comment_text">Text</label> <br>
+    <textarea name="comment[text]" id="comment_text">Interesting article.</textarea>
+    <span class="errors" data-for="text"></span>
   </p>
 
-  <p data-attr="percent_off">
-    <input type="hidden" name="percent_off" value="0" />
+  <div data-attr="article_id">
+    <input type="hidden" value="1" name="comment[article_id]" id="comment_article_id" />
+  </div>
 
-    <input type="checkbox" name="percent_off" value="50" />
-    <label>50% off</label>
+  <div data-attr="pinned">
+    <input name="comment[pinned]" type="hidden" value="0" />
+    <input type="checkbox" value="1" name="comment[pinned]" id="comment_pinned" /> 
+    <label for="comment_pinned">Pinned</label>
+  </div>
 
-    <span class="errors" data-for="percent_off"></span>
-  </p>
-
-  <p data-attr="duration">
-    <label>Duration</label><br>
-    <select>
-      <option value="forever">Forever</option>
-      <option value="once">Once</option>
-      <option value="repeating">Repeating</option>
+  <div data-attr="admin_rate">
+    <label for="comment_admin_rate">Rate</label>
+    <select name="comment[admin_rate]" id="comment_admin_rate">
+      <option value="1">Awful</option>
+      <option value="2">Bad</option>
+      <option selected="selected" value="3">Decent</option>
+      <option value="4">Good</option>
+      <option value="5">Amazing</option>
     </select>
-  </p>
+  </div>
 
-  <p data-attr="duration_in_months">
-    <label>Duration in months</label><br>
-    <input type="text" />
-    <span class="errors" data-for="duration_in_months"></span>
-  </p>
+  <div data-attr="emotion">
+    <input type="radio" value="-1" name="comment[emotion]" id="comment_emotion_-1" /> 
+    <label for="comment_emotion_-1">Negative</label>
+    
+    <input type="radio" value="0" checked="checked" name="comment[emotion]" id="comment_emotion_0" /> 
+    <label for="comment_emotion_0">Neutral</label>
+    
+    <input type="radio" value="1" name="comment[emotion]" id="comment_emotion_1" /> 
+    <label for="comment_emotion_1">Positive</label>
+  </div>
 
   <p>
-    <input type="submit" value="Submit" />
-    <span class="errors" data-for="base"></span>
+    <input type="submit" name="commit" value="Update Comment" />
   </p>
 </form>
 ```
