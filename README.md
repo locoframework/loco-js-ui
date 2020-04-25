@@ -4,9 +4,9 @@
 
 # 🧐 What is Loco-JS-UI?
 
-Loco-JS-UI is an optional part of the Loco framework. It can be used with Loco-JS to connect models with UI elements like forms. Models are created using Loco-JS-Models and connect JavaScript objects with their representation on the back-end.
+Loco-JS-UI is an optional part of the Loco framework. It can be used along with [Loco-JS](https://github.com/locoframework/loco-js) to connect models with UI elements like forms. Models are created using [Loco-JS-Model](https://github.com/locoframework/loco-js-model) and they connect JavaScript objects with their representation on the back-end.
 
-Loco-JS-UI supports only form at this moment throughout all UI elements.
+Loco-JS-UI supports only a **\<form\>** element throughout all HTML elements at this moment.
 
 *Visualization of the Loco framework:*
 
@@ -23,16 +23,15 @@ Loco Framework
         |
         |--- Loco-JS-Model (model part / can be used separately)
         |
-        |--- other parts of Loco-JS
+        |--- other built-in parts of Loco-JS
 
-        Loco-JS-UI - connects models with UI elements (extracted to a separate library)
+        Loco-JS-UI - connects models with UI elements (a separate library)
 ```
 
 # 📝 UI.Form
 
-`UI.Form` is a class that connects a model instance with a form.  
-It is useful to allow users to modify the model's attributes.  
-`UI.Form` converts attributes of the model's instance to the values of the corresponding form elements.  
+`UI.Form` is a class that connects a model instance with a form. It allows users to modify model attributes.  
+`UI.Form` converts attributes of the model's instance to values of the corresponding form elements.  
 It delivers a front-end validation without an extra effort, and it turns a standard static form into a dynamic, submitted asynchronously one.
 
 Example:
@@ -59,14 +58,14 @@ const updated = data => {
 export default (opts = {}) => {
   const form = new UI.Form({
     for: new CommentModel({ id: opts.commentId, resource: "admin" }),
-        // (optional) model instance connected with the form
+        // (optional) a model instance connected with the form
     id: `edit_comment_${opts.commentId}`, 
         // (optional) the ID attribute of the HTML <form> element.
-        // If not passed - it is resolved based on the value of model's ID property to:
-        // * `edit_${lowercased model's identity property}_${model's ID}` - if present
-        // * `new_${lowercased model's identity property}` - if null
+        // If not passed - it is resolved based on the value of a model's ID property to:
+        // * if present => `edit_${lowercased model's identity property}_${model's ID}`
+        // * if null => `new_${lowercased model's identity property}`
     initObj: true,  // (optional) determines whether to initialize the passed object based
-                    // on the value of the corresponding form elements.
+                    // on values of the corresponding form elements.
                     // False by default (object retains the initial attribute values)
     callbackActive: active,   // (optional) function called after sending the request
     callbackFailure: failure  // (optional) function called if an object is invalid
@@ -138,23 +137,23 @@ Look at how errors are expressed. The tag is irrelevant. Only **errors** class a
 </form>
 ```
 
-Keep in mind that a form submission sends **all model attributes** to the server. Sent attributes are not limited to only these available for modification via form fields. The model's attribute can be an object as well. For example, if you want to send nested resources.
+Keep in mind that a form submission sends **all model attributes** to the server. Sent attributes are not limited to only these available for modification via form fields. A value of a model's attribute can be an object as well. For example, if you want to send nested resources.
 
-A model's instance is considered as new, not persisted on the server if the ID attribute is `null`. Loco-JS will send the following XHR request upon form submission.
+A model's instance is considered as new, not persisted on the server if the value of the ID attribute is `null`. Loco-JS will send the following XHR request upon form submission in this case.
 
 ```bash
 Started POST "/admin/articles/1/comments"
 Parameters: {"comment":{"author":"Tommy","text":"Interesting article.","article_id":1,"created_at":null,"updated_at":null,"emotion":0,"pinned":false,"admin_rate":3,"approved":null}}
 ```
 
-On the other hand, if a model's instance ID attribute is not null, Loco-JS-UI sends the following XHR request to the server.
+On the other hand, if the value of the model's instance ID attribute is not null, Loco-JS-UI sends the following XHR request to the server.
 
 ```bash
 Started PUT "/admin/articles/1/comments/1"
 Parameters: {"comment":{"author":"Tommy","text":"Interesting article.","article_id":1,"created_at":null,"updated_at":null,"emotion":0,"pinned":false,"admin_rate":3,"approved":null}}
 ```
 
-The success response from the server should be in the JSON format with the following structure:
+The success response from the server must be in the JSON format with the following structure:
 
 ```javascript
 {
