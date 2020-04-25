@@ -184,6 +184,28 @@ The example of the failure response:
 }
 ```
 
+# 📥 Installation
+
+```bash
+$ npm install --save loco-js-ui
+```
+
+# 🤝 Dependencies
+
+🎊 Loco-JS-UI has no dependencies. 🎉
+
+# ⚙️ Configuration
+
+Loco-JS-UI is usable only along with Loco-JS.  
+The following code shows how to connect both libraries.
+
+```javascript
+import { connector } from "loco-js";
+import { connect } from "loco-js-ui";
+
+connect(connector);
+```
+
 # 📜 License
 
 Loco-JS-UI is released under the [MIT License](https://opensource.org/licenses/MIT).
