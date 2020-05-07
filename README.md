@@ -212,4 +212,4 @@ Loco-JS-UI is released under the [MIT License](https://opensource.org/licenses/M
 
 # 👨‍🏭 Author
 
-Zbigniew Humeniuk from [Art of Code](http://artofcode.co)
+Zbigniew Humeniuk from [Art of Code](https://artofcode.co)
