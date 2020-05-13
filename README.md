@@ -190,10 +190,6 @@ The example of the failure response:
 $ npm install --save loco-js-ui
 ```
 
-# 🤝 Dependencies
-
-🎊 Loco-JS-UI has no dependencies. 🎉
-
 # ⚙️ Configuration
 
 Loco-JS-UI is usable only along with Loco-JS.  
@@ -205,6 +201,16 @@ import { connect } from "loco-js-ui";
 
 connect(connector);
 ```
+
+# 👩🏽‍🔬 Tests
+
+```bash
+npm run test
+```
+
+# 🤝 Dependencies
+
+🎊 Loco-JS-UI has no dependencies. 🎉
 
 # 📜 License
 
