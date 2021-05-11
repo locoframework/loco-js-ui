@@ -27,7 +27,6 @@
       "pre-commit": "lint-staged"
     }
   },
-  "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.10.5",
     "@babel/preset-env": "^7.10.4",
