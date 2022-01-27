@@ -202,15 +202,27 @@ import { connect } from "loco-js-ui";
 connect(connector);
 ```
 
+# 🤝 Dependencies
+
+🎊 Loco-JS-UI has no dependencies. 🎉
+
+
 # 👩🏽‍🔬 Tests
 
 ```bash
 npm run test
 ```
 
-# 🤝 Dependencies
 
-🎊 Loco-JS-UI has no dependencies. 🎉
+# 📈 Changelog
+
+## Major releases 🎙
+
+### 6.0  _(2022-01-XX)_
+
+* the implementation of the `connect` function has been changed
+* Loco-JS-UI works with Loco-JS v6
+
 
 # 📜 License
 

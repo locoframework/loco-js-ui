@@ -4,7 +4,7 @@ import en from "./locales/en";
 
 const connect = connector => {
   Deps.getLocale = connector.getLocale;
-  Deps.wire = connector.Env.loco.wire;
+  Deps.wire = connector.loco.getWire();
   Deps.I18n = connector.I18n;
   Deps.I18n.en = { ...en, ...Deps.I18n.en };
 };

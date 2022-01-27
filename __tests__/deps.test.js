@@ -2,7 +2,7 @@ import Deps from "deps.js";
 import { connect } from "index";
 
 const connectorThatOverwrites = {
-  Env: { loco: { wire: null } },
+  loco: { getWire: () => {} },
   I18n: {
     en: {
       ui: {
@@ -15,7 +15,7 @@ const connectorThatOverwrites = {
 };
 
 const connectorThatAdds = {
-  Env: { loco: { wire: null } },
+  loco: { getWire: () => {} },
   I18n: {
     pl: {
       ui: {
