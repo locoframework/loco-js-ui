@@ -218,7 +218,7 @@ npm run test
 
 ## Major releases 🎙
 
-### 6.0  _(2022-01-XX)_
+### 6.0  _(2022-02-03)_
 
 * the implementation of the `connect` function has been changed
 * Loco-JS-UI works with Loco-JS v6

@@ -1,6 +1,6 @@
 {
   "name": "loco-js-ui",
-  "version": "0.1.2",
+  "version": "6.0.0",
   "description": "A UI part of loco-js",
   "main": "dist/loco-ui.js",
   "scripts": {
