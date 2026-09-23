@@ -82,7 +82,7 @@ class Form
       this.obj.save()
       .then (data) =>
         this._alwaysAfterRequest()
-        if data.success
+        if data.ok
           this._handleSuccess data, clearForm
         else
           this.callbackFailure() if this.callbackFailure?
@@ -108,7 +108,7 @@ class Form
       this.submit.blur() if this.submit?
       if e.target.status >= 200 and e.target.status < 400
         data = JSON.parse e.target.response
-        if data.success
+        if data.ok
           this._handleSuccess data, this.form.getAttribute("method") is "POST"
         else
           this._renderErrors data.errors

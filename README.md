@@ -157,7 +157,7 @@ The success response from the server must be in the JSON format with the followi
 
 ```javascript
 {
-  "success": true,
+  "ok": true,
   "status": 200,
   "data": {      // (optional) this object is passed to
     "id": 123,   // callbackSuccess if defined
@@ -175,7 +175,7 @@ The example of the failure response:
 
 ```javascript
 {
-  "success": false,
+  "ok": false,
   "status": 400,
   "errors": {
     "text": ["is vulgar"],
